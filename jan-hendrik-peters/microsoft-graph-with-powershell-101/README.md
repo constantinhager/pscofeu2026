@@ -562,3 +562,29 @@ Commit, push, and witness our work come to fruition!
 Going forward from here, you can customize your app registration and create new ones to fit your automation needs. Using
 resource such as Azure Automation Runbooks you don't even need to handle federated credentials, as the platform does
 it all for you and you can simply sign-in.
+
+
+## Bonus: More examples to try
+
+
+```powershell
+# Compound Conditions
+Invoke-EntraRequest -Path "users?`$filter=accountEnabled eq false and department eq 'IT'"
+Invoke-EntraRequest -path "users?`$filter=(startswith(givenname,'John') AND department eq 'IT') OR (displayName eq 'Johns Elvis')&`$select=displayName,department"
+
+# Advanced Queries
+$theHeader = @{consistencylevel = 'eventual'}
+# Mixed query parameters
+Invoke-EntraRequest -Path 'users?$search="displayName:John"&$filter=department eq ''Customers''' -Header $theHeader
+
+# Some more $count-ing - for example Apps with too few owners
+# Normal approach does not work here
+Invoke-EntraRequest -Path 'applications?$filter=owners/$count le 2&$count=true&$select=id,displayName' -Header $theHeader
+# The attribute only supports comparisons with 0 and 1
+Invoke-EntraRequest -Path 'applications?$filter=owners/$count eq 0 or owners/$count eq 1&$count=true&$select=id,displayName' -Header $theHeader
+
+# A bit more arcane with lambda operators
+# Look closely at the docs: https://learn.microsoft.com/en-us/graph/aad-advanced-queries?tabs=http#application-properties
+# This advanced query requires $count AND the header
+Invoke-EntraRequest -path 'applications?$count=true&$filter=publicClient/redirectUris/any(p:startswith(p, ''http''))' -Header $theHeader -Service GraphBeta
+```
