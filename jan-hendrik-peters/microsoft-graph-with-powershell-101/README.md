@@ -162,7 +162,7 @@ OAuth2 Permission Scopes describe the delegated permissions available to interac
 Roles describe application roles available to non-interactive users, i.e. applications.
 
 So, where do we get started while looking for resources? Well, the authoritative source
-is always best: <https://learn.microsoft.com/en-us/graph/permissions-reference>. Merrill Fernando, the principal product manager for Entra,
+is always best: <https://learn.microsoft.com/en-us/graph/permissions-reference>. Merrill Fernando, the **former** principal product manager for Entra,
 also provides an excellent overview: <https://graphpermissions.merill.net/permission/>
 
 That being said, the [Graph X-Ray extension](https://graphxray.merill.net/) is an excellent
@@ -263,7 +263,7 @@ Too much UIs are bad for you, so let's get back to the CLI!
    ```
 1. With that done, we can update the application using the HTTP-method `PATCH` and the application's object id or application id:
    
-   `Invoke-EntraRequest -Method Patch -Path applications/$graph`
+   `Invoke-EntraRequest -Method Patch -Path applications/$($app.id) -Body $body -ContentType application/json`
 1. Either GET the app again or view the portal to verify that the app permissions have indeed been requested and not yet been consented to.
 1. Congratulations! You're well on your way to actually automate some things using the Graph API!
 
@@ -288,7 +288,7 @@ In our case, both permissions require admin consent.
 1. With this information, we can start building our request:
 
    ```powershell
-   $appServicePrincipal = Invoke-EntraRequest -Path "servicePrincipals(appid='cdc0925b-d7eb-49c8-bc92-980dc5da44b2')"
+   $appServicePrincipal = Invoke-EntraRequest -Path "servicePrincipals(appid='$($app.appId)')"
    $graphApp = '00000003-0000-0000-c000-000000000000'
    $graphServicePrincipal = Invoke-EntraRequest -Path "servicePrincipals(appId='$graphApp')"
    $role = $graphServicePrincipal.appRoles | Where value -eq Application.Read.All
@@ -315,6 +315,7 @@ In our case, both permissions require admin consent.
    $oauth2PermissionGrant = @{
       resourceId  = $graphServicePrincipal.id
       consentType = 'AllPrincipals'
+      #principalId = 'GUID of the USER'
       clientId    = $appServicePrincipal.id
       scope       = $delegate.value -join ' ' # Or trust the $OFS
    }
@@ -358,7 +359,7 @@ Client secrets are just that: A pre-shared secret with an expiration date! Let's
 
 1. We start with the [API docs](https://learn.microsoft.com/en-us/graph/api/application-addpassword?view=graph-rest-1.0&tabs=http) again. The Application resource supports adding all kinds of secrets!
    >NOTE: Take note of the request body parameters: They are all optional, meaning: This is the simplest credential to create!
-1. Time to create a password and store it in a variable: `$clientSecret = Invoke-EntraRequest -Path applications/$($app.id)/addPassword -ContentType application/json`
+1. Time to create a password and store it in a variable: `$clientSecret = Invoke-EntraRequest -Path applications/$($app.id)/addPassword -Method Post -ContentType application/json`
 1. `$clientSecret.secretText` now contains your client secret. Try logging in with it!
    <details>
    <summary>Show me</summary>
