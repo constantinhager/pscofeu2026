@@ -1,5 +1,11 @@
 # Persist Your PowerShell Script Data with Data API Builder
 
+## Demos
+
+All the demo code is available in this repo: [jpomfret/dab-presentation](https://github.com/jpomfret/dab-presentation).
+
+Blog posts are here: [JessPomfret.com](https://jesspomfret.com/categories/dab/)
+
 ## Abstract
 
 Have you ever wanted an easy way to stash data from your PowerShell scripts—logs, results, automation state, anything you need to keep safe and query later? As a former DBA, of course I’m going to recommend using a database. But if that sounds like too much effort, let me show you a trick.

@@ -1,5 +1,9 @@
 # SQL Server 2025, AI and PowerShell Scripts
 
+## Demos
+
+All the demo code is available in this repo: [JessAndRob/SQLServer2025](https://github.com/JessAndRob/SQLServer2025).
+
 ## Abstract
 
 SQL Server 2025, is labelled as the ‘AI-ready enterprise database’, but what does this mean? And why do we, as PowerShell enthusiasts care?
