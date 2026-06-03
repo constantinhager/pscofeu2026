@@ -564,6 +564,18 @@ Going forward from here, you can customize your app registration and create new 
 resource such as Azure Automation Runbooks you don't even need to handle federated credentials, as the platform does
 it all for you and you can simply sign-in.
 
+Workflow to automatically update secrets in a vault:
+
+- Attach the Vault Secret Resource Id to each app registration using the internal notes or service management reference
+- Give the App the permissions
+  - To also update password and certificate secrets
+  - The role "Key Vault Certificate Officer" or "Key Vault Secrets Officer" on the vault
+- In the sample workflow, read the vault secret resource ID and parse the required info
+- POST a new client secret/certificate (certs need to contain signed JWT token as proof!)
+  - If app contains only expired or near-expired secrets
+- Add a new secret version to Key Vault
+- Let the old secret expire naturally, and maybe remove expired secrets
+
 
 ## Bonus: More examples to try
 
