@@ -9,3 +9,8 @@ What if Dev, Test, and Prod were not separate environments at all, but simply di
 In this session, we will walk through the foundation needed to treat Intune like the rest of your infrastructure. Using PowerShell and GitHub Actions, you will see how Intune policy can become a deployable artifact that moves predictably through Dev, Test, and Prod, with guardrails that support change instead of slowing it down.
 
 This is about bringing pipelines, consistency, and trust to Intune without rewriting your environment or abandoning the PowerShell skills you already have.
+
+
+## Code Location
+
+All the code can be found here: [IntuneStack](https://github.com/AllwaysHyPe/IntuneStack)
